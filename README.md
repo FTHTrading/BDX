@@ -1,42 +1,44 @@
-# BDX — UnyKorn Quant Command
+# BDX — UnyKorn structuring console
 
-Issuer structuring software for **UnyKorn LLC / FTH Trading**.  
-Not a broker-dealer. Not a bank. Not a custodian. Not an ATS. Not a market maker.
+Issuance and structuring software for **UnyKorn LLC / FTH Trading**.
 
-**Status:** calculation, rail map, handoff packet.  
-It does **not** place orders, hold assets, settle cash, mint, or fire execution.
+Not a broker-dealer, bank, custodian, ATS, or exchange.
+
+**Scope:** public references, internal size, counterparty map, issuance handoff.  
+This repository does **not** accept orders, hold assets, settle cash, mint, or transmit execution.
 
 ---
 
 ## Table of contents
 
-1. [Color code](#color-code)
-2. [One-click launch](#one-click-launch)
+1. [Status](#status)
+2. [Handoff](#handoff)
 3. [Rooms](#rooms)
-4. [Backend](#backend)
+4. [System map](#system-map)
 5. [Infrastructure](#infrastructure)
 6. [What is functional](#what-is-functional)
 7. [What is not](#what-is-not)
-8. [Legal](#legal)
+8. [Layout](#layout)
+9. [Legal](#legal)
 
 ---
 
-## Color code
+## Status
 
 | Chip | Hex | Meaning |
 | :---: | :---: | --- |
-| **REF** | `#1D4E89` navy | Public delayed print. Not executable. |
-| **LAB** | `#B8892D` gold | Browser sizing only. |
-| **RAIL** | `#0F766E` teal | Named counterparty. No session. |
-| **HOLD** | `#6B7280` slate | Not live. |
+| **REF** | `#1D4E89` | Public reference. Delayed venue print. Not a UnyKorn price. |
+| **LAB** | `#B8892D` | Internal size. Calculation only. Not a market. |
+| **RAIL** | `#0F766E` | Named counterparty. No account session. |
+| **HOLD** | `#6B7280` | Not connected. Order, custody, settlement, mint remain off-system. |
 
 See [docs/COLOR.md](docs/COLOR.md).
 
 ---
 
-## One-click launch
+## Handoff
 
-In the console: **Launch** copies the JSON handoff and opens mail.
+**Handoff** copies a JSON packet (issuer, counterparties, possession stance, timestamp) and opens mail.
 
 It does not mint. See [docs/LAUNCH.md](docs/LAUNCH.md).
 
@@ -46,24 +48,22 @@ It does not mint. See [docs/LAUNCH.md](docs/LAUNCH.md).
 
 | Room | Job |
 | --- | --- |
-| Quant | Blotter, Black–Scholes, GBM, OBI, confluence |
-| Ops | BitGo Express, Paxos, possession gate |
-| Infra | Rails, chains, CCT, SKUs |
-| Docs | Honest cockpit map |
-| Launch | Handoff packet |
+| Desk | Blotter, Black–Scholes, GBM, book imbalance, confluence |
+| Operations | BitGo Express, Paxos, possession evidence |
+| Infrastructure | Counterparties, chains, CCT, contract families, modules |
+| Documentation | System map and connectivity |
+| Handoff | Structured packet |
 | Firms / RWA / Letters | Directory, economics, mailto |
 
 ---
 
-## Backend
+## System map
 
-Operator cockpit (Pearson vs Fed liquidity, SPI, execution trigger, agent chat) is **not attached**.
+Operator execution is **not connected**.
 
-This console:
-
-- **REF** Coinbase spots + L2 OBI (top 100)
-- **LAB** confluence from OBI + vol + sample Pearson
-- **HOLD** execution trigger (always refuse)
+- **REF** Coinbase spots and L2 book imbalance (top 100)
+- **LAB** confluence from OBI, vol, and a sample Pearson series
+- **HOLD** transmit instruction (declined)
 
 Full map: [docs/BACKEND.md](docs/BACKEND.md).
 
@@ -71,23 +71,43 @@ Full map: [docs/BACKEND.md](docs/BACKEND.md).
 
 ## Infrastructure
 
-BitGo Express · BitGo Bank & Trust · Paxos · itBit · x402 · mint · TROPTIONS · CCT/CCIP  
-[smart-contract-builder](https://github.com/FTHTrading/smart-contract-builder) · [BD-New](https://github.com/FTHTrading/BD-New) · [whitelabel](https://github.com/FTHTrading/whitelabel)
+BitGo Express · BitGo Bank & Trust · Paxos · itBit · x402 · UnyKorn mint · UnyKorn Exchange OS · CCT/CCIP
+
+- [smart-contract-builder](https://github.com/FTHTrading/smart-contract-builder)
+- [BD-New](https://github.com/FTHTrading/BD-New)
+- [whitelabel](https://github.com/FTHTrading/whitelabel)
 
 ---
 
 ## What is functional
 
-Public marks, OBI, Black–Scholes, GBM, T-bill / waterfall, possession gate (default refuse), hash receipts, launch packet copy.
+Public marks, book imbalance, Black–Scholes, GBM, T-bill / waterfall, possession evidence (default: not asserted), hash-chained receipts, handoff copy.
 
 ## What is not
 
-Live RFQ, Express ping, Paxos session, Fed WALCL feed, SPI fire, mint, BD registration.
+Live RFQ, Express query, Paxos session, Federal Reserve feed, execution, mint, broker-dealer registration.
+
+---
+
+## Layout
+
+```
+src/routes/desk.tsx       Desk
+src/routes/ops.tsx        Operations
+src/routes/protocol.tsx   Infrastructure
+src/routes/docs.tsx       Documentation
+src/routes/launch.tsx     Handoff
+src/lib/quant.ts          Pricing
+src/lib/rails.ts          Counterparties
+src/lib/possession.ts     Possession gate
+src/data/firms.json       Firm book
+docs/                     COLOR, BACKEND, LAUNCH
+```
 
 ---
 
 ## Legal
 
-UnyKorn LLC licenses software and infrastructure. Custody, where used, opens in the client’s name at BitGo Bank & Trust or Paxos.
+UnyKorn LLC licenses software and infrastructure. Custody, where used, opens in the client’s name at BitGo Bank & Trust or Paxos. Material here is information, not an offer of securities.
 
 © UnyKorn LLC / FTH Trading

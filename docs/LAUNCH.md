@@ -1,8 +1,5 @@
-# One-click launch
+# Issuance handoff
 
-`Launch` copies a JSON handoff packet:
+**Handoff** copies a JSON packet (issuer, counterparties, possession stance, timestamp) and opens mail.
 
-- issuer, rails, possession stance, timestamp
-- mailto to `kevan@unykorn.org`
-
-It does **not** mint, ping Express, or fire an execution trigger.
+It does not mint, instruct BitGo Express, or originate an order.
