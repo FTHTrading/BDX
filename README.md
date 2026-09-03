@@ -3,7 +3,7 @@
 Issuer structuring software for **UnyKorn LLC / FTH Trading**.  
 Not a broker-dealer. Not a bank. Not a custodian. Not an ATS. Not a market maker.
 
-**Status of this console:** calculation, firm book, and outreach drafts.  
+**Status of this console:** calculation, firm book, rail map, and outreach drafts.  
 It does **not** place orders, hold assets, settle cash, or mint.
 
 ---
@@ -13,23 +13,20 @@ It does **not** place orders, hold assets, settle cash, or mint.
 1. [What this is](#what-this-is)
 2. [Color code](#color-code)
 3. [Rooms](#rooms)
-4. [Named rails (not live)](#named-rails-not-live)
-5. [What is functional](#what-is-functional)
-6. [What is not](#what-is-not)
-7. [Repo layout](#repo-layout)
-8. [Legal](#legal)
+4. [Infrastructure](#infrastructure)
+5. [Named rails](#named-rails)
+6. [What is functional](#what-is-functional)
+7. [What is not](#what-is-not)
+8. [Repo layout](#repo-layout)
+9. [Legal](#legal)
 
 ---
 
 ## What this is
 
-BDX is the **issuance lab**: size a series, map counterparties, run T-bill / LP economics, and open a mandate letter in the operator’s mail client.
+BDX is the **issuance lab plus infrastructure map**: size a series, name custody rails (BitGo Express, Paxos), run T-bill / LP economics, list contract families, and open a mandate letter.
 
 Minting, if any, lives on the issuer’s launch rail — not in this console.
-
-Positioning:
-
-> Issuer structuring and institutional workflow software for tokenized products — reference analytics, issuance design, counterparty coordination, and controlled launch handoff.
 
 ---
 
@@ -37,33 +34,46 @@ Positioning:
 
 | Chip | Color | Meaning |
 | --- | --- | --- |
-| **REF** | Navy `#1D4E89` | Public spot print. Delayed. Not a UnyKorn quote. Not executable. |
-| **LAB** | Gold `#B8892D` | Sizing ticket. Lives in the browser. Never a fill. |
-| **RAIL** | Teal `#0F766E` | Named counterparty (BitGo, Paxos, itBit, …). No API session here. |
-| **HOLD** | Slate `#6B7280` | Not live: no order, custody, settlement, or mint from this site. |
-
-Use these chips on every blotter row. Do not mark BitGo or Paxos as LIVE unless a session, account id, and confirmation exist.
+| **REF** | Navy `#1D4E89` | Public spot print. Delayed. Not executable. |
+| **LAB** | Gold `#B8892D` | Sizing ticket. Lives in the browser. |
+| **RAIL** | Teal `#0F766E` | Named counterparty. No API session here. |
+| **HOLD** | Slate `#6B7280` | Not live: no order, custody, settlement, or mint. |
 
 ---
 
 ## Rooms
 
-| Room | Job | Execution |
-| --- | --- | --- |
-| Home | Reference tape, color legend, TOC | Display |
-| Desk | Blotter, Black–Scholes, GBM paths | Calculation |
-| Firms | 116-firm book: they buy / we sell / wave | Directory |
-| RWA | T-bill lift vs idle cash; LP waterfall | Calculator |
-| Letters | Mandate draft → copy / mailto | Outbound only |
-| Engage | Name, firm, note → mail client | Outbound only |
+| Room | Job |
+| --- | --- |
+| Quant (`/desk`) | Blotter, Black–Scholes, GBM |
+| Ops (`/ops`) | BitGo Express, Paxos, possession gate, hash receipts |
+| Infra (`/protocol`) | Rails, chains, Genesis402, contracts, SKUs |
+| Firms | They buy / we sell |
+| RWA | T-bill lift, LP waterfall |
+| Letters / Engage | Mailto only |
 
 ---
 
-## Named rails (not live)
+## Infrastructure
 
-BitGo Bank & Trust · Paxos · itBit · Go Network · x402 · UnyKorn Mint
+- BitGo Express (client-hosted daemon) — HOLD
+- BitGo Bank & Trust — RAIL
+- Paxos / itBit — RAIL
+- x402, mint.unykorn.org, TROPTIONS — RAIL
+- CCT / CCIP BurnMint — HOLD (unsigned)
+- Unykorn L1 `7331` — HOLD · Apostle `7332` — HOLD
+- [smart-contract-builder](https://github.com/FTHTrading/smart-contract-builder)
+- [BD-New](https://github.com/FTHTrading/BD-New)
+- [whitelabel](https://github.com/FTHTrading/whitelabel)
+- [Genesis402 protocol](https://dev.genesis402.com/protocol/overview/)
 
-These are **intended** counterparties. This repo does not contain API keys, wallet balances, or settlement instructions.
+---
+
+## Named rails
+
+BitGo Express · BitGo Bank & Trust · Paxos · itBit · x402 · System mint · TROPTIONS · CCT/CCIP
+
+No API keys, wallet balances, or settlement instructions in this repo.
 
 ---
 
@@ -72,15 +82,15 @@ These are **intended** counterparties. This repo does not contain API keys, wall
 - Public spot marks (BTC, ETH, SOL, PAXG)
 - European Black–Scholes + GBM tails
 - T-bill vs cash carry and LP waterfall
+- Possession gate (lab checkboxes; default refuse)
+- SHA-256 receipt append
 - Firm filter and mandate letter generation
-- Color-coded blotter (REF / LAB / HOLD)
 
 ## What is not
 
-- Live trading or RFQ
-- Custody, KYC, or funded accounts
-- On-chain mint / burn
-- CRM send/track
+- Live trading, RFQ, Express ping, Paxos session
+- Custody, KYC, funded accounts
+- On-chain mint / burn / CCT deploy
 - Broker-dealer registration
 
 ---
@@ -88,11 +98,13 @@ These are **intended** counterparties. This repo does not contain API keys, wall
 ## Repo layout
 
 ```
-src/routes/     Home, Desk, Firms, RWA, Letters, Engage
-src/lib/quant.ts    Lab math
-src/lib/firms.ts    Book + letter body
-src/components/status.tsx   Color chips
-src/data/firms.json
+src/routes/desk.tsx       Quant
+src/routes/ops.tsx        Back office
+src/routes/protocol.tsx   Infrastructure
+src/lib/quant.ts          Lab math
+src/lib/rails.ts          Rails / chains / SKUs
+src/lib/possession.ts     Five-condition gate
+src/data/firms.json       Firm book
 ```
 
 ---
