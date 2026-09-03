@@ -46,3 +46,93 @@ export function blackScholes(p: {
   const vega = (S * dq * nPdf(d1) * Math.sqrt(t)) / 100;
   return { call, put, delta, vega, d1, d2 };
 }
+
+function mulberry32(seed: number) {
+  return function () {
+    let t = (seed += 0x6d2b79f5);
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+function gauss(rng: () => number) {
+  const u = Math.max(1e-12, rng());
+  const v = rng();
+  return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
+}
+
+export function gbmPaths(p: {
+  s0: number;
+  mu: number;
+  sigma: number;
+  days: number;
+  nPaths: number;
+  seed: number;
+}) {
+  const rng = mulberry32(p.seed || 1);
+  const dt = 1 / 252;
+  const paths: number[][] = [];
+  const last: number[] = [];
+  for (let i = 0; i < p.nPaths; i++) {
+    const row = [p.s0];
+    let s = p.s0;
+    for (let d = 0; d < p.days; d++) {
+      s =
+        s *
+        Math.exp(
+          (p.mu - 0.5 * p.sigma * p.sigma) * dt + p.sigma * Math.sqrt(dt) * gauss(rng),
+        );
+      row.push(s);
+    }
+    paths.push(row);
+    last.push(s);
+  }
+  last.sort((a, b) => a - b);
+  const pct = (q: number) => last[Math.min(last.length - 1, Math.floor(q * last.length))];
+  return { paths, p05: pct(0.05), p50: pct(0.5), p95: pct(0.95) };
+}
+
+export function tBillLift(p: {
+  notional: number;
+  cashPct: number;
+  billPct: number;
+  adminBps: number;
+  days: number;
+  haircutPct: number;
+}) {
+  const t = p.days / 365;
+  const cashCarry = p.notional * (p.cashPct / 100) * t;
+  const billNet =
+    p.notional *
+    (1 - p.haircutPct / 100) *
+    (p.billPct / 100 - p.adminBps / 10000) *
+    t;
+  return { cashCarry, billNet, lift: billNet - cashCarry };
+}
+
+export function waterfall(p: {
+  auc: number;
+  stackBps: number;
+  ourTakeBps: number;
+  lpCapital: number;
+  endNav: number;
+  prefPct: number;
+}) {
+  const stack = (p.auc * p.stackBps) / 10000;
+  const ourTake = (p.auc * p.ourTakeBps) / 10000;
+  const pref = p.lpCapital * (p.prefPct / 100);
+  const gain = Math.max(0, p.endNav - p.lpCapital);
+  const lpPref = Math.min(gain, pref);
+  const residual = Math.max(0, gain - pref);
+  const gpCatch = residual * 0.2;
+  const lpResidual = residual * 0.8;
+  return {
+    stack,
+    ourTake,
+    lpPref,
+    lpResidual,
+    gpCatch,
+    lpTotal: p.lpCapital + lpPref + lpResidual,
+  };
+}
