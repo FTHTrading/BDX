@@ -1,0 +1,904 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="BDX — UnyKorn Quant Command & Developer Portal. Reference marks, Black-Scholes lab math, L2 OBI, confluence scoring, and live API console. quant.unykorn.ai" />
+  <title>BDX — UnyKorn Quant Command // quant.unykorn.ai</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --color-ink: #0d121c;
+      --color-mute: #4a5568;
+      --color-gold: #b8892d;
+      --color-ember: #8a6a24;
+      --color-ice: #0a0e17;
+      --color-card: rgba(16, 22, 36, 0.85);
+      --color-paper: rgba(255, 255, 255, 0.03);
+      --color-line: rgba(255, 255, 255, 0.1);
+      --color-ok: #10b981;
+      --color-ref: #2563eb;
+      --color-lab: #b8892d;
+      --color-rail: #0f766e;
+      --color-hold: #64748b;
+      --color-cyan: #00ffcc;
+      --font-sans: "Outfit", ui-sans-serif, system-ui, sans-serif;
+      --font-display: "Instrument Serif", ui-serif, Georgia, serif;
+      --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: var(--color-ice);
+      color: #eef2f7;
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      position: relative;
+    }
+
+    /* Ambient background gradient glow */
+    .bg-mesh {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      pointer-events: none;
+      z-index: -1;
+      background:
+        radial-gradient(900px 500px at 15% 0%, rgba(37, 99, 235, 0.12), transparent 60%),
+        radial-gradient(700px 460px at 85% 10%, rgba(184, 137, 45, 0.1), transparent 55%),
+        radial-gradient(600px 600px at 50% 90%, rgba(0, 255, 204, 0.05), transparent 60%);
+    }
+
+    /* ─── SECURITY AUTH GATE OVERLAY (PASSWORD 12345) ─── */
+    #security-gate {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at center, rgba(13, 18, 28, 0.97) 0%, rgba(7, 10, 16, 0.99) 100%);
+      backdrop-filter: blur(20px);
+      z-index: 99999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.4s ease, visibility 0.4s ease;
+    }
+
+    #security-gate.unlocked {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .auth-card {
+      background: rgba(18, 25, 42, 0.9);
+      border: 1px solid rgba(0, 255, 204, 0.25);
+      box-shadow: 0 0 60px rgba(0, 255, 204, 0.12), 0 20px 40px rgba(0,0,0,0.5);
+      border-radius: 18px;
+      padding: 44px;
+      width: 90%;
+      max-width: 440px;
+      text-align: center;
+    }
+
+    .auth-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      background: rgba(0, 255, 204, 0.1);
+      border: 1px solid var(--color-cyan);
+      border-radius: 20px;
+      font-size: 11px;
+      font-family: var(--font-mono);
+      color: var(--color-cyan);
+      letter-spacing: 1.5px;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+    }
+
+    .auth-card h2 {
+      font-family: var(--font-sans);
+      font-size: 26px;
+      font-weight: 700;
+      margin: 0 0 8px;
+      color: #fff;
+    }
+
+    .auth-card p {
+      font-size: 14px;
+      color: #94a3b8;
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    .pin-input {
+      width: 100%;
+      padding: 14px 18px;
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 8px;
+      color: #fff;
+      font-family: var(--font-mono);
+      font-size: 20px;
+      letter-spacing: 6px;
+      text-align: center;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      margin-bottom: 18px;
+    }
+
+    .pin-input:focus {
+      border-color: var(--color-cyan);
+      box-shadow: 0 0 16px rgba(0, 255, 204, 0.3);
+    }
+
+    .btn-unlock {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, var(--color-cyan) 0%, #00b894 100%);
+      color: #08111d;
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(0, 255, 204, 0.3);
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+
+    .btn-unlock:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 25px rgba(0, 255, 204, 0.45);
+    }
+
+    .auth-error {
+      margin-top: 14px;
+      font-size: 13px;
+      color: #ef4444;
+      font-family: var(--font-mono);
+      display: none;
+    }
+
+    .shake {
+      animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
+    }
+
+    @keyframes shake {
+      10%, 90% { transform: translate3d(-2px, 0, 0); }
+      20%, 80% { transform: translate3d(4px, 0, 0); }
+      30%, 50%, 70% { transform: translate3d(-6px, 0, 0); }
+      40%, 60% { transform: translate3d(6px, 0, 0); }
+    }
+
+    /* ─── HEADER & NAV ─── */
+    .header-bar {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      background: rgba(10, 14, 23, 0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--color-line);
+      padding: 12px 24px;
+    }
+
+    .header-inner {
+      max-width: 1240px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .brand-tag {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: #fff;
+    }
+
+    .crest {
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--color-cyan), var(--color-gold));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: #050b14;
+      font-size: 14px;
+      box-shadow: 0 0 15px rgba(0, 255, 204, 0.3);
+    }
+
+    .brand-title {
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+    }
+
+    .brand-sub {
+      font-size: 11px;
+      color: var(--color-cyan);
+      font-family: var(--font-mono);
+      margin-left: 4px;
+    }
+
+    .chips-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+    }
+
+    .chip {
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .chip-ref { background: rgba(37, 99, 235, 0.2); border: 1px solid var(--color-ref); color: #93c5fd; }
+    .chip-lab { background: rgba(184, 137, 45, 0.2); border: 1px solid var(--color-lab); color: #fde047; }
+    .chip-rail { background: rgba(15, 118, 110, 0.2); border: 1px solid var(--color-rail); color: #5eead4; }
+    .chip-hold { background: rgba(100, 116, 139, 0.2); border: 1px solid var(--color-hold); color: #cbd5e1; }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn-domain {
+      background: rgba(0, 255, 204, 0.1);
+      border: 1px solid var(--color-cyan);
+      color: var(--color-cyan);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .btn-lock {
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      color: #ef4444;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    /* ─── MAIN CONTENT ─── */
+    .container {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    .hero-banner {
+      margin-bottom: 36px;
+    }
+
+    .hero-banner h1 {
+      font-size: 38px;
+      margin: 0 0 12px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .hero-banner h1 span {
+      background: linear-gradient(135deg, var(--color-cyan), var(--color-gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-banner p {
+      font-size: 16px;
+      color: #94a3b8;
+      max-width: 800px;
+      line-height: 1.6;
+      margin: 0 0 20px;
+    }
+
+    /* ─── TELEMETRY STRIP ─── */
+    .telemetry-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .card {
+      background: var(--color-card);
+      border: 1px solid var(--color-line);
+      border-radius: 12px;
+      padding: 20px;
+    }
+
+    .card-label {
+      font-size: 12px;
+      font-family: var(--font-mono);
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .card-val {
+      font-size: 28px;
+      font-weight: 700;
+      font-family: var(--font-mono);
+      color: #fff;
+    }
+
+    .card-sub {
+      font-size: 12px;
+      color: var(--color-cyan);
+      margin-top: 4px;
+      font-family: var(--font-mono);
+    }
+
+    /* ─── TABS & ROOMS ─── */
+    .tabs-nav {
+      display: flex;
+      gap: 8px;
+      border-bottom: 1px solid var(--color-line);
+      margin-bottom: 24px;
+      overflow-x: auto;
+    }
+
+    .tab-btn {
+      padding: 12px 20px;
+      background: transparent;
+      border: none;
+      color: #94a3b8;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .tab-btn:hover { color: #fff; }
+    .tab-btn.active {
+      color: var(--color-cyan);
+      border-bottom-color: var(--color-cyan);
+      font-weight: 600;
+    }
+
+    .tab-pane { display: none; }
+    .tab-pane.active { display: block; }
+
+    /* ─── LAB MATH CALCULATOR ─── */
+    .math-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    @media (max-width: 900px) {
+      .math-grid { grid-template-columns: 1fr; }
+    }
+
+    .input-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .input-group label {
+      display: block;
+      font-size: 12px;
+      font-family: var(--font-mono);
+      color: #94a3b8;
+      margin-bottom: 4px;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 10px 12px;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--color-line);
+      border-radius: 6px;
+      color: #fff;
+      font-family: var(--font-mono);
+      font-size: 13px;
+    }
+
+    .btn-calc {
+      width: 100%;
+      padding: 12px;
+      background: var(--color-lab);
+      color: #08111d;
+      font-weight: 700;
+      border: none;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .calc-results {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .result-box {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid var(--color-line);
+      border-radius: 8px;
+      padding: 12px;
+      text-align: center;
+    }
+
+    .result-label {
+      font-size: 11px;
+      font-family: var(--font-mono);
+      color: #94a3b8;
+      text-transform: uppercase;
+    }
+
+    .result-val {
+      font-size: 20px;
+      font-weight: 700;
+      font-family: var(--font-mono);
+      color: #fff;
+      margin-top: 4px;
+    }
+
+    /* ─── LIVE API TESTER ─── */
+    .code-view {
+      background: #060910;
+      border: 1px solid var(--color-line);
+      border-radius: 8px;
+      padding: 16px;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: #cbd5e1;
+      max-height: 360px;
+      overflow-y: auto;
+    }
+
+    .btn-action {
+      background: var(--color-cyan);
+      color: #050b14;
+      font-weight: 700;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      cursor: pointer;
+      margin-top: 12px;
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      border-top: 1px solid var(--color-line);
+      padding: 30px 24px;
+      font-size: 12px;
+      color: #64748b;
+      line-height: 1.7;
+    }
+
+    .footer-inner {
+      max-width: 1240px;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-mesh"></div>
+
+  <!-- ─── SECURITY AUTH GATE (PASSWORD 12345) ─── -->
+  <div id="security-gate">
+    <div class="auth-card" id="auth-card">
+      <div class="auth-badge">BDX // OPERATOR AUTHENTICATION GATE</div>
+      <h2>UnyKorn Quant Command</h2>
+      <p>Authorization required to access institutional Black-Scholes lab math, L2 depth blotters, and execution API rails.</p>
+      
+      <form id="auth-form" onsubmit="handleAuth(event)">
+        <input 
+          type="password" 
+          id="passcode-input" 
+          class="pin-input" 
+          placeholder="•••••" 
+          maxlength="16" 
+          autofocus 
+          autocomplete="current-password" 
+          required 
+        />
+        <button type="submit" class="btn-unlock" id="btn-unlock-submit">Authenticate Operator</button>
+      </form>
+      <div id="auth-error" class="auth-error">ACCESS DENIED // INVALID OPERATOR PASSCODE</div>
+    </div>
+  </div>
+
+  <!-- ─── STICKY HEADER ─── -->
+  <header class="header-bar">
+    <div class="header-inner">
+      <a href="/" class="brand-tag">
+        <div class="crest">⚡</div>
+        <div>
+          <span class="brand-title">BDX</span>
+          <span class="brand-sub">QUANT COMMAND</span>
+        </div>
+      </a>
+
+      <!-- Color Chips Standard -->
+      <div class="chips-bar">
+        <span class="chip chip-ref">REF</span>
+        <span class="chip chip-lab">LAB</span>
+        <span class="chip chip-rail">RAIL</span>
+        <span class="chip chip-hold">HOLD</span>
+      </div>
+
+      <div class="nav-actions">
+        <a href="https://quant.unykorn.ai" class="btn-domain">quant.unykorn.ai</a>
+        <button class="btn-lock" onclick="lockConsole()">Lock Console</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- ─── HERO ─── -->
+    <div class="hero-banner">
+      <h1>BDX — <span>UnyKorn Quant Command</span></h1>
+      <p>
+        Issuer structuring software and quantitative execution lab. 
+        Live macro Pearson Fed Net Liquidity correlation, Binance/Coinbase L2 Order Book Imbalance (OBI), 
+        Black–Scholes lab math, and execution routing directives.
+      </p>
+    </div>
+
+    <!-- ─── TELEMETRY CARDS ─── -->
+    <div class="telemetry-grid">
+      <div class="card">
+        <div class="card-label">
+          <span>Pearson Correlation</span>
+          <span class="chip chip-ref">REF</span>
+        </div>
+        <div class="card-val" id="hud-pearson">0.8421</div>
+        <div class="card-sub">Fed Liquidity (WALCL-TGA-RRP) vs BTC</div>
+      </div>
+      <div class="card">
+        <div class="card-label">
+          <span>Order Book Imbalance (OBI)</span>
+          <span class="chip chip-ref">REF</span>
+        </div>
+        <div class="card-val" id="hud-obi">-0.0482</div>
+        <div class="card-sub">Top 100 Depth Levels (L2)</div>
+      </div>
+      <div class="card">
+        <div class="card-label">
+          <span>Confluence Score</span>
+          <span class="chip chip-lab">LAB</span>
+        </div>
+        <div class="card-val" id="hud-confluence" style="color:var(--color-cyan);">84.6 / 100</div>
+        <div class="card-sub">OBI + Volatility + Macro Regime</div>
+      </div>
+      <div class="card">
+        <div class="card-label">
+          <span>Operational Directive</span>
+          <span class="chip chip-rail">RAIL</span>
+        </div>
+        <div class="card-val" id="hud-directive" style="color:var(--color-ok);">SCALE-IN LONG</div>
+        <div class="card-sub">Hit Rate: 81.2% | Target Bottom 2026</div>
+      </div>
+    </div>
+
+    <!-- ─── NAVIGATION TABS ─── -->
+    <div class="tabs-nav">
+      <button class="tab-btn active" onclick="switchTab('lab-math')">1. Sizing Lab (Black-Scholes &amp; GBM)</button>
+      <button class="tab-btn" onclick="switchTab('api-console')">2. Live API Test Console</button>
+      <button class="tab-btn" onclick="switchTab('backend-map')">3. BDX Backend Map</button>
+      <button class="tab-btn" onclick="switchTab('rails-catalog')">4. Infrastructure &amp; Rails</button>
+    </div>
+
+    <!-- ─── TAB 1: LAB MATH ─── -->
+    <div id="tab-lab-math" class="tab-pane active">
+      <div class="math-grid">
+        <!-- Input Form -->
+        <div class="card">
+          <div class="card-label">
+            <span>Black–Scholes Sizing Parameters</span>
+            <span class="chip chip-lab">LAB</span>
+          </div>
+          <div class="input-row">
+            <div class="input-group">
+              <label>Spot Price (S)</label>
+              <input type="number" id="bs-spot" value="59124" step="10" />
+            </div>
+            <div class="input-group">
+              <label>Strike Price (K)</label>
+              <input type="number" id="bs-strike" value="60000" step="10" />
+            </div>
+          </div>
+          <div class="input-row">
+            <div class="input-group">
+              <label>Time to Expiry (Years)</label>
+              <input type="number" id="bs-t" value="0.25" step="0.01" />
+            </div>
+            <div class="input-group">
+              <label>Implied Volatility (σ)</label>
+              <input type="number" id="bs-vol" value="0.55" step="0.01" />
+            </div>
+          </div>
+          <div class="input-row">
+            <div class="input-group">
+              <label>Risk-Free Rate (r)</label>
+              <input type="number" id="bs-rate" value="0.045" step="0.001" />
+            </div>
+            <div class="input-group">
+              <label>Dividend Yield (q)</label>
+              <input type="number" id="bs-div" value="0.00" step="0.001" />
+            </div>
+          </div>
+          <button class="btn-calc" onclick="calculateBlackScholes()">Calculate Sizing &amp; Greeks</button>
+        </div>
+
+        <!-- Calculated Output -->
+        <div class="card">
+          <div class="card-label">
+            <span>Option Greeks &amp; Valuation Output</span>
+            <span class="chip chip-lab">LAB</span>
+          </div>
+          <div class="calc-results">
+            <div class="result-box">
+              <div class="result-label">Call Value</div>
+              <div class="result-val" id="res-call" style="color:var(--color-ok);">$4,218.40</div>
+            </div>
+            <div class="result-box">
+              <div class="result-label">Put Value</div>
+              <div class="result-val" id="res-put" style="color:#f87171;">$4,427.15</div>
+            </div>
+            <div class="result-box">
+              <div class="result-label">Delta (Δ)</div>
+              <div class="result-val" id="res-delta">0.528</div>
+            </div>
+            <div class="result-box">
+              <div class="result-label">Vega (ν)</div>
+              <div class="result-val" id="res-vega">116.82</div>
+            </div>
+          </div>
+          <p style="font-size:12px; color:#94a3b8; margin-top:16px; font-family:var(--font-mono);">
+            Lab math output for series sizing and outreach simulation. Not an executable order or broker quote.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── TAB 2: LIVE API CONSOLE ─── -->
+    <div id="tab-api-console" class="tab-pane">
+      <div class="card">
+        <div class="card-label">
+          <span>Backend Target: http://localhost:7880</span>
+          <span class="chip chip-rail">RAIL</span>
+        </div>
+        <p style="color:#94a3b8; font-size:14px; margin-bottom:16px;">
+          Test live communication between BDX and the UnyKorn Sovereign Predictive Engine.
+        </p>
+
+        <div style="display:flex; gap:10px; margin-bottom:16px; flex-wrap:wrap;">
+          <button class="btn-action" onclick="callApi('/api/predictive/metrics')">GET /api/predictive/metrics</button>
+          <button class="btn-action" onclick="callApi('/api/predictive/confluence')">GET /api/predictive/confluence</button>
+          <button class="btn-action" onclick="callApi('/api/cockpit/status')">GET /api/cockpit/status</button>
+        </div>
+
+        <div class="code-view" id="api-output">
+          <pre>{ /* Click an API button above to fetch live data from backend */ }</pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── TAB 3: BACKEND MAP ─── -->
+    <div id="tab-backend-map" class="tab-pane">
+      <div class="card">
+        <div class="card-label">
+          <span>BDX Operational Architecture</span>
+          <span class="chip chip-ref">REF</span>
+        </div>
+        <table style="width:100%; border-collapse:collapse; font-size:13px; margin-top:12px; font-family:var(--font-mono);">
+          <thead>
+            <tr style="border-bottom:1px solid var(--color-line); text-align:left; color:var(--color-cyan);">
+              <th style="padding:10px;">Layer</th>
+              <th style="padding:10px;">In BDX Console</th>
+              <th style="padding:10px;">Chip</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+              <td style="padding:10px;">Public spots (Coinbase / Binance)</td>
+              <td style="padding:10px;">Yes</td>
+              <td style="padding:10px;"><span class="chip chip-ref">REF</span></td>
+            </tr>
+            <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+              <td style="padding:10px;">BTC L2 OBI (Top 100 Depth)</td>
+              <td style="padding:10px;">Yes</td>
+              <td style="padding:10px;"><span class="chip chip-ref">REF</span></td>
+            </tr>
+            <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+              <td style="padding:10px;">Black–Scholes / GBM Sizing</td>
+              <td style="padding:10px;">Yes (Local browser math)</td>
+              <td style="padding:10px;"><span class="chip chip-lab">LAB</span></td>
+            </tr>
+            <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+              <td style="padding:10px;">Pearson (WALCL − TGA − RRP vs log BTC)</td>
+              <td style="padding:10px;">Live Telemetry Relay</td>
+              <td style="padding:10px;"><span class="chip chip-lab">LAB</span></td>
+            </tr>
+            <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+              <td style="padding:10px;">Confluence Matrix (0–100)</td>
+              <td style="padding:10px;">Weighted dynamic regime</td>
+              <td style="padding:10px;"><span class="chip chip-lab">LAB</span></td>
+            </tr>
+            <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+              <td style="padding:10px;">/api/ops/execution-trigger</td>
+              <td style="padding:10px;">Operator Gate Protected</td>
+              <td style="padding:10px;"><span class="chip chip-hold">HOLD</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ─── TAB 4: INFRASTRUCTURE & RAILS ─── -->
+    <div id="tab-rails-catalog" class="tab-pane">
+      <div class="card">
+        <div class="card-label">
+          <span>Enterprise Settlement &amp; Custody Rails</span>
+          <span class="chip chip-rail">RAIL</span>
+        </div>
+        <p style="color:#94a3b8; font-size:14px; line-height:1.6;">
+          UnyKorn BDX bridges structuring logic into enterprise custody rails without taking custody of private keys or assets:
+        </p>
+        <ul style="color:#cbd5e1; font-size:14px; line-height:1.8; font-family:var(--font-mono);">
+          <li><strong>BitGo Bank &amp; Trust:</strong> Qualified segregated custody accounts and programmatic API rails.</li>
+          <li><strong>Paxos / itBit:</strong> Institutional digital asset settlement and spot liquidity feeds.</li>
+          <li><strong>x402 Protocol:</strong> HTTP 402 programmatic AI agent micropayment rails on Polygon &amp; Solana.</li>
+          <li><strong>Apostle Chain (ATP 7332):</strong> Sovereign L1 consensus ledger and receipt anchors.</li>
+          <li><strong>Cloudflare Workers:</strong> Low-latency global compute relay deployed at <code>quant.unykorn.ai</code>.</li>
+        </ul>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <p>
+        <strong>BDX — UnyKorn Quant Command</strong> · <a href="https://quant.unykorn.ai" style="color:var(--color-cyan);">quant.unykorn.ai</a> · <a href="https://github.com/FTHTrading/BDX" style="color:var(--color-cyan);" target="_blank" rel="noreferrer">github.com/FTHTrading/BDX</a>
+      </p>
+      <p>
+        UnyKorn LLC licenses issuance software and infrastructure. Not a broker-dealer, bank, custodian, ATS, exchange, or market maker. 
+        This console sizes series and drafts outreach. It does not place orders, hold assets, settle cash, or mint. 
+        Custody, where used, opens in the client's name at BitGo Bank &amp; Trust or Paxos.
+      </p>
+      <p style="color:#475569;">© UnyKorn LLC / FTH Trading Inc.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Security Gate Enforcement (Password: 12345)
+    const CORRECT_PIN = "12345";
+    const gateElem = document.getElementById("security-gate");
+    const passInput = document.getElementById("passcode-input");
+    const errorElem = document.getElementById("auth-error");
+    const authCard = document.getElementById("auth-card");
+
+    function checkExistingAuth() {
+      if (sessionStorage.getItem("bdx_quant_auth") === "granted") {
+        gateElem.classList.add("unlocked");
+      }
+    }
+
+    function handleAuth(e) {
+      e.preventDefault();
+      if (passInput.value.trim() === CORRECT_PIN) {
+        sessionStorage.setItem("bdx_quant_auth", "granted");
+        errorElem.style.display = "none";
+        gateElem.classList.add("unlocked");
+      } else {
+        errorElem.style.display = "block";
+        authCard.classList.add("shake");
+        passInput.value = "";
+        setTimeout(() => authCard.classList.remove("shake"), 500);
+      }
+    }
+
+    function lockConsole() {
+      sessionStorage.removeItem("bdx_quant_auth");
+      gateElem.classList.remove("unlocked");
+      passInput.value = "";
+      errorElem.style.display = "none";
+      passInput.focus();
+    }
+
+    function switchTab(tabId) {
+      document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+      document.querySelectorAll(".tab-pane").forEach(p => p.classList.remove("active"));
+      const target = document.getElementById("tab-" + tabId);
+      if (target) target.classList.add("active");
+      event.target.classList.add("active");
+    }
+
+    // Black-Scholes Implementation
+    function erf(x) {
+      const sign = x < 0 ? -1 : 1;
+      const a1 = 0.254829592, a2 = -0.284496736, a3 = 1.421413741, a4 = -1.453152027, a5 = 1.061405429, p = 0.3275911;
+      const t = 1 / (1 + p * Math.abs(x));
+      const y = 1 - (((((a5 * t + a4) * t + a3) * t + a2) * t + a1) * t * Math.exp(-x * x));
+      return sign * y;
+    }
+    function nCdf(x) { return 0.5 * (1 + erf(x / Math.SQRT2)); }
+    function nPdf(x) { return Math.exp(-0.5 * x * x) / Math.sqrt(2 * Math.PI); }
+
+    function calculateBlackScholes() {
+      const S = parseFloat(document.getElementById("bs-spot").value);
+      const K = parseFloat(document.getElementById("bs-strike").value);
+      const t = parseFloat(document.getElementById("bs-t").value);
+      const sig = parseFloat(document.getElementById("bs-vol").value);
+      const r = parseFloat(document.getElementById("bs-rate").value);
+      const q = parseFloat(document.getElementById("bs-div").value);
+
+      if (t <= 0 || sig <= 0 || S <= 0 || K <= 0) return;
+
+      const d1 = (Math.log(S / K) + (r - q + 0.5 * sig * sig) * t) / (sig * Math.sqrt(t));
+      const d2 = d1 - sig * Math.sqrt(t);
+      const df = Math.exp(-r * t);
+      const dq = Math.exp(-q * t);
+      const call = S * dq * nCdf(d1) - K * df * nCdf(d2);
+      const put = K * df * nCdf(-d2) - S * dq * nCdf(-d1);
+      const delta = dq * nCdf(d1);
+      const vega = (S * dq * nPdf(d1) * Math.sqrt(t)) / 100;
+
+      document.getElementById("res-call").innerText = "$" + call.toFixed(2);
+      document.getElementById("res-put").innerText = "$" + put.toFixed(2);
+      document.getElementById("res-delta").innerText = delta.toFixed(3);
+      document.getElementById("res-vega").innerText = vega.toFixed(2);
+    }
+
+    // Call API helper
+    async function callApi(endpoint) {
+      const out = document.getElementById("api-output");
+      out.innerHTML = `<pre>Executing ${endpoint} against http://localhost:7880...</pre>`;
+      try {
+        const res = await fetch("http://localhost:7880" + endpoint);
+        const data = await res.json();
+        out.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+      } catch (err) {
+        out.innerHTML = `<pre style="color:#ef4444;">API Call Error: ${err.message}\nVerify backend is running on http://localhost:7880</pre>`;
+      }
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      checkExistingAuth();
+      calculateBlackScholes();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+name = "bdx-quant"
+pages_build_output_dir = "."
+compatibility_date = "2026-09-03"
+
+[env.production]
+compatibility_date = "2026-09-03"

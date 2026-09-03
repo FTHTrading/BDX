@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Quant Command — UnyKorn LLC</title>
+<meta name="description" content="UnyKorn LLC Quant Command. Issuance desk, firm book, RWA lab. Reference marks only. Not a broker-dealer."/>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{--ink:#0b0d12;--mute:#3a4250;--gold:#b8892d;--ice:#f5f7fb;--line:rgba(255,255,255,.8);--glass:rgba(255,255,255,.58)}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:Outfit,system-ui,sans-serif;color:var(--ink);background:var(--ice)}
+a{color:inherit;text-decoration:none}
+.stage{position:fixed;inset:0;z-index:0;pointer-events:none;background:
+  radial-gradient(900px 500px at 8% -10%,rgba(214,230,255,.95),transparent 58%),
+  radial-gradient(700px 460px at 94% 0,rgba(255,232,204,.65),transparent 55%),
+  linear-gradient(180deg,#f8fbff,#eef2f7)}
+header{position:sticky;top:0;z-index:40;backdrop-filter:blur(20px);background:rgba(255,255,255,.5);border-bottom:1px solid rgba(255,255,255,.7)}
+.bar{max-width:1120px;margin:0 auto;padding:12px 22px;display:flex;align-items:center;gap:18px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:600;letter-spacing:.14em;font-size:12px;white-space:nowrap}
+.crest{width:28px;height:28px}
+nav{display:flex;gap:2px;flex:1}
+nav a{padding:8px 11px;font:500 14px Outfit;color:var(--ink);border-radius:999px;white-space:nowrap}
+nav a:hover,nav a.on{background:rgba(255,255,255,.75)}
+.btn{border-radius:999px;padding:12px 20px;font:600 16px Outfit;display:inline-block;border:0;cursor:pointer}
+.gold{background:linear-gradient(180deg,#f3e2b3,#c4962e);color:#2a1c04;box-shadow:0 8px 18px rgba(180,130,40,.22)}
+.ghost{background:#fff;border:1px solid rgba(18,21,28,.14)}
+nav a{cursor:pointer}
+nav a:hover,nav a.on{background:#fff;box-shadow:0 1px 0 rgba(18,21,28,.06)}
+.wrap{position:relative;z-index:1;max-width:1120px;margin:0 auto;padding:56px 22px 72px}
+.eyebrow{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:600}
+h1{font-family:"Instrument Serif",serif;font-size:clamp(48px,7vw,80px);font-weight:400;line-height:1.04;letter-spacing:-.03em;margin:12px 0 14px;max-width:820px}
+h1 em{font-style:italic;color:#8a6a24}
+.lede{font-size:20px;line-height:1.55;color:#2c3340;max-width:620px;font-weight:400}
+.actions{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap}
+.banner{margin:56px -22px 0;padding:18px 22px;border-top:1px solid rgba(18,21,28,.06);border-bottom:1px solid rgba(18,21,28,.06);background:rgba(255,255,255,.35);overflow:hidden}
+.banner p{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);margin-bottom:10px}
+.track{display:flex;gap:28px;align-items:center;flex-wrap:wrap}
+.track b{font-size:17px;font-weight:500}
+.doors{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:48px}
+@media(max-width:800px){.doors{grid-template-columns:1fr 1fr} nav{flex-wrap:wrap}}
+.door{background:rgba(255,255,255,.72);border:1px solid rgba(18,21,28,.12);border-radius:20px;padding:20px 20px 18px;backdrop-filter:blur(16px);cursor:pointer;display:block;box-shadow:inset 0 1px 0 #fff, 0 10px 28px rgba(30,50,80,.08);transition:transform .16s ease, box-shadow .16s ease, border-color .16s;position:relative}
+.door:hover,.door:focus{transform:translateY(-3px);border-color:rgba(184,137,45,.55);box-shadow:inset 0 1px 0 #fff, 0 16px 36px rgba(30,50,80,.14);outline:none}
+.door:after{content:"Open →";display:block;margin-top:14px;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:#8a6a24;font-weight:600}
+.door h3{font-size:22px;margin:8px 0}
+.door p{font-size:16px;color:#2c3340;line-height:1.5}
+.tag{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#2f9aa3}
+h2{font-family:"Instrument Serif",serif;font-size:30px;font-weight:400;margin:0 0 10px}
+.sub{color:#2c3340;margin-bottom:18px;max-width:640px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.card{background:var(--glass);border:1px solid var(--line);border-radius:18px;padding:16px;backdrop-filter:blur(16px)}
+.card h3{font-size:16px;margin:6px 0}
+.card p,.notes{font-size:14px;color:#2c3340;line-height:1.55}
+.panel{background:var(--glass);border:1px solid var(--line);border-radius:18px;padding:16px;backdrop-filter:blur(16px);margin-bottom:14px}
+.row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+label{display:block;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);margin:8px 0 4px}
+input,select,textarea{width:100%;background:rgba(255,255,255,.75);border:1px solid rgba(18,21,28,.1);border-radius:10px;padding:9px 11px;font:14px Outfit;color:var(--ink)}
+.out{margin-top:10px;font-family:ui-monospace,monospace;font-size:12.5px;background:rgba(255,255,255,.6);border-radius:10px;padding:10px;white-space:pre-wrap}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.toolbar input,.toolbar select{width:auto;min-width:150px}
+.acts a{display:inline-block;margin:6px 6px 0 0;font-size:11px;letter-spacing:.06em;text-transform:uppercase;border:1px solid rgba(18,21,28,.12);padding:5px 8px;border-radius:8px}
+.hq{color:var(--mute);font-size:12px;margin:4px 0}
+canvas{width:100%;height:170px;background:rgba(255,255,255,.45);border-radius:10px;margin-top:8px}
+.tag.w1{color:#1a1406;background:var(--gold);border-radius:999px;padding:2px 8px}
+footer{position:relative;z-index:1;padding:28px 22px 48px;font-size:12px;color:#3a4250;line-height:1.55}
+footer .inner{max-width:1120px;margin:0 auto}
+.marks{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+.chip{background:rgba(255,255,255,.82);border:1px solid rgba(18,21,28,.12);border-radius:12px;padding:8px 12px;font-size:14px;font-variant-numeric:tabular-nums}
+.chip b{display:block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#3a4250;font-weight:600}
+.chip small{display:block;font-size:10px;letter-spacing:.08em;color:#5a6472;margin-top:2px}
+.chip em{font-style:normal;font-weight:600;font-size:17px}
+.refbar{margin:28px 0 8px;padding:16px 18px;border-radius:18px;background:rgba(255,255,255,.62);border:1px solid rgba(255,255,255,.85);backdrop-filter:blur(16px);box-shadow:inset 0 1px 0 #fff,0 12px 32px rgba(30,50,80,.06)}
+.refbar .row{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.refbar .k{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#8a6a24;font-weight:600}
+.refbar .meta{font-size:13px;color:#3a4250;font-variant-numeric:tabular-nums}
+.lab{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#8a6a24}
+</style></head>
+<body><a href="https://quant.unykorn.ai/cdn-cgi/content?id=jgkRGHOUlr.dbZM5xng4BUAh.I4zY39h2eFo6A3X8ps-1788381936.2768595-1.2.1.1-0WMU0YZW.KCpO1OEKv83rRrkqvxlMNdjAGFW50q.rrdLOgLzqTzqQWPGMMgyB99F" aria-hidden="true" rel="nofollow noopener" style="display: none !important; visibility: hidden !important"></a>
+<div class="stage"></div>
+<div style="position:relative;z-index:60;background:rgba(255,255,255,.62);backdrop-filter:blur(16px);border-bottom:1px solid rgba(18,21,28,.06);font-size:13px;font-weight:500">
+<div style="max-width:1120px;margin:0 auto;padding:8px 22px;display:flex;gap:16px;flex-wrap:wrap;align-items:center">
+<span style="width:8px;height:8px;border-radius:50%;background:#1aa36a;display:inline-block"></span>
+<span>QUANT LIVE</span><span id="clk"></span>
+<span>BitGo</span><span>Paxos</span><span>itBit</span><span>Go Network</span>
+</div></div>
+<header><div class="bar">
+  <a class="brand" href="/"><svg class="crest" viewBox="0 0 200 200" aria-hidden="true"><defs><linearGradient id="uk-steel" x1="0.12" y1="0" x2="0.88" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="0.42" stop-color="#b7bbbe"/><stop offset="1" stop-color="#7f8386"/></linearGradient><linearGradient id="uk-ember" x1="0.18" y1="0" x2="0.82" y2="1"><stop offset="0" stop-color="#ffc24a"/><stop offset="0.45" stop-color="#f5750d"/><stop offset="1" stop-color="#c43f00"/></linearGradient></defs><path d="M157.4,48.3 A77.2,77.2 0 0 1 160,148.6" fill="none" stroke="url(#uk-steel)" stroke-width="22.8"/><path d="M135,168.8 A77.2,77.2 0 0 1 61.4,166.9" fill="none" stroke="url(#uk-steel)" stroke-width="22.8"/><path d="M42.6,151.7 A77.2,77.2 0 0 1 135,31.2" fill="none" stroke="url(#uk-steel)" stroke-width="22.8"/><path d="M99.6,55.7 L171,196 L110.1,122.4 L98.2,125 L87.7,121.5 L26.8,193.8 Z M175.8,-2.0 L134.6,87.9 L120.2,62.0 Z" fill="url(#uk-ember)" fill-rule="nonzero"/></svg>UNYKORN LLC</a>
+  <nav><a href="/" class="on">Home</a><a href="/desk">Desk</a><a href="/firms">Firms</a><a href="/rwa">RWA</a><a href="/letters">Letters</a><a href="/developer" style="color:#b8892d;font-weight:600;">Developer Docs (Gate: 12345)</a></nav>
+  <a class="btn gold" href="https://unykorn.ai/#onboard">Engage</a>
+</div></header>
+<div class="wrap">
+<div class="eyebrow">UnyKorn LLC · Quant Command</div>
+<h1>Issuance desk.<br><em>Reference only.</em></h1>
+<p class="lede">Issuance software for UnyKorn operators. Four rooms. Named counterparties. Mandate letters. Reference marks only — never a quote, never a fill.</p>
+
+<div class="refbar">
+  <div class="row">
+    <span class="k">Reference tape</span>
+    <span class="meta" id="refMeta">Delayed public print · not a UnyKorn quote · not executable</span>
+  </div>
+  <div class="marks" id="marks">
+    <div class="chip"><b>BTC</b><em id="mBTC">—</em><small>USD REF</small></div>
+    <div class="chip"><b>ETH</b><em id="mETH">—</em><small>USD REF</small></div>
+    <div class="chip"><b>SOL</b><em id="mSOL">—</em><small>USD REF</small></div>
+    <div class="chip"><b>PAXG</b><em id="mPAXG">—</em><small>USD REF</small></div>
+  </div>
+</div>
+<div class="actions">
+  <a class="btn gold" href="/desk">Open the desk</a>
+  <a class="btn ghost" href="/firms">Firm book</a>
+  <a class="btn ghost" href="/developer" style="border-color:#b8892d;">Developer Docs (Gate: 12345) →</a>
+</div>
+<div class="banner">
+  <p>Counterparties</p>
+  <div class="track">
+    <b>BitGo Bank &amp; Trust</b>
+    <b>Paxos</b>
+    <b>itBit</b>
+    <b>Go Network</b>
+    <b>x402</b>
+    <b>UnyKorn Mint</b>
+  </div>
+</div>
+<div class="doors" style="grid-template-columns:repeat(auto-fit,minmax(190px,1fr));">
+  <a class="door" href="/desk"><div class="tag">01</div><h3>Desk</h3><p>Black–Scholes, paths, Sharpe. Tools that size a series.</p></a>
+  <a class="door" href="/firms"><div class="tag">02</div><h3>Firms</h3><p>What they fund. What we sell. Official doors only.</p></a>
+  <a class="door" href="/rwa"><div class="tag">03</div><h3>RWA</h3><p>T-bill drag, stack bps, LP waterfall.</p></a>
+  <a class="door" href="/letters"><div class="tag">04</div><h3>Letters</h3><p>Mandate in, mailto out. UnyKorn LLC only.</p></a>
+  <a class="door" href="/developer" style="border-color:rgba(184,137,45,0.4);"><div class="tag" style="color:#b8892d;">05 · GATE 12345</div><h3>Developer Docs</h3><p>Quant API endpoints, Pearson Fed Net Liquidity, execution trigger.</p></a>
+</div>
+</div>
+<footer><div class="inner">UnyKorn LLC · Quant Command. Software and infrastructure. Not your broker-dealer, bank, custodian, or market maker. Custody, where used, opens in your name at BitGo Bank &amp; Trust or Paxos.</div></footer>
+
+<script>
+async function marks(){
+  const fmt=n=>Number(n).toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});
+  const set=(id,v)=>{const el=document.getElementById(id); if(el&&v!=null) el.textContent="$"+fmt(v);}
+  const stamp=()=>{
+    const el=document.getElementById("refMeta");
+    if(!el) return;
+    el.textContent=new Date().toLocaleString("en-US",{timeZone:"America/New_York",hour12:false})+" ET · public spot · not a quote";
+  };
+  try{
+    let j=null;
+    try{
+      const r=await fetch("/api/marks",{cache:"no-store"});
+      if(r.ok) j=await r.json();
+    }catch(e){}
+    if(j&& (j.BTC||j.btc||j.bitcoin)){
+      set("mBTC", j.BTC||j.btc||j.bitcoin);
+      set("mETH", j.ETH||j.eth||j.ethereum);
+      set("mSOL", j.SOL||j.sol||j.solana);
+      set("mPAXG", j.PAXG||j.paxg);
+      stamp();
+      return;
+    }
+    const ids=["BTC-USD","ETH-USD","SOL-USD","PAXG-USD"];
+    const out={};
+    await Promise.all(ids.map(async id=>{
+      const r=await fetch("https://api.coinbase.com/v2/prices/"+id+"/spot");
+      const d=await r.json();
+      out[id]=d.data&&d.data.amount;
+    }));
+    set("mBTC", out["BTC-USD"]); set("mETH", out["ETH-USD"]);
+    set("mSOL", out["SOL-USD"]); set("mPAXG", out["PAXG-USD"]);
+    stamp();
+  }catch(e){
+    const el=document.getElementById("refMeta");
+    if(el) el.textContent="Reference tape unavailable";
+  }
+}
+marks();
+setInterval(marks,30000); setInterval(marks,60000);
+function tick(){const e=document.getElementById("clk"); if(e) e.textContent=new Date().toLocaleString("en-US",{timeZone:"America/New_York",hour12:false});} tick(); setInterval(tick,1000);</script></body></html>

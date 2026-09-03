@@ -7,6 +7,11 @@ Not a broker-dealer, bank, custodian, ATS, or exchange.
 **Scope:** public references, internal size, counterparty map, issuance handoff.  
 This repository does **not** accept orders, hold assets, settle cash, mint, or transmit execution.
 
+**Live Surface:** [https://quant.unykorn.ai](https://quant.unykorn.ai)  
+**Security Gate Passcode:** `12345`  
+**Repository:** [https://github.com/FTHTrading/BDX](https://github.com/FTHTrading/BDX)
+
+
 ---
 
 ## Table of contents

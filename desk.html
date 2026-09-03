@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Desk — UnyKorn Quant</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+:root{--ink:#0b0d12;--mute:#3a4250;--gold:#b8892d;--glass:rgba(255,255,255,.72)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Outfit,system-ui,sans-serif;color:var(--ink);background:#f5f7fb}
+a{color:inherit;text-decoration:none}
+.stage{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(900px 500px at 8% -10%,rgba(214,230,255,.95),transparent 58%),radial-gradient(700px 460px at 94% 0,rgba(255,232,204,.65),transparent 55%),linear-gradient(180deg,#f8fbff,#eef2f7)}
+.tape{position:relative;z-index:60;background:rgba(255,255,255,.72);backdrop-filter:blur(16px);border-bottom:1px solid rgba(18,21,28,.08);font-size:13px;font-weight:500}
+.tape-in{max-width:1180px;margin:0 auto;padding:8px 22px;display:flex;gap:14px;flex-wrap:wrap;align-items:center;font-variant-numeric:tabular-nums}
+.dot{width:8px;height:8px;border-radius:50%;background:#1aa36a;animation:pulse 1.6s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(26,163,106,.45)}70%{box-shadow:0 0 0 8px transparent}}
+.up{color:#0d5c38}.dn{color:#9b2c2c}
+.flash{animation:flash .7s ease}
+@keyframes flash{from{background:#e8f7ee}}
+header{position:sticky;top:0;z-index:40;backdrop-filter:blur(20px);background:rgba(255,255,255,.55);border-bottom:1px solid rgba(255,255,255,.7)}
+.bar{max-width:1180px;margin:0 auto;padding:12px 22px;display:flex;align-items:center;gap:18px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:600;letter-spacing:.14em;font-size:12px}
+.crest{width:32px;height:32px}
+nav{display:flex;gap:2px;flex:1;flex-wrap:wrap}
+nav a{padding:8px 11px;font:500 15px Outfit;border-radius:999px}
+nav a.on,nav a:hover{background:#fff}
+.btn{border-radius:999px;padding:10px 16px;font:600 14px Outfit;display:inline-block;border:0;cursor:pointer}
+.gold{background:linear-gradient(180deg,#f3e2b3,#c4962e);color:#2a1c04}
+.ghost{background:#fff;border:1px solid rgba(18,21,28,.14)}
+.wrap{position:relative;z-index:1;max-width:1180px;margin:0 auto;padding:32px 22px 72px}
+.eyebrow{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);font-weight:600}
+h1{font-family:"Instrument Serif",serif;font-size:clamp(36px,5vw,56px);font-weight:400;margin:8px 0 10px}
+.lede{font-size:18px;color:#2c3340;max-width:680px}
+.panel{background:var(--glass);border:1px solid rgba(18,21,28,.12);border-radius:18px;padding:18px;backdrop-filter:blur(16px);margin:16px 0;box-shadow:inset 0 1px 0 #fff,0 10px 28px rgba(30,50,80,.07)}
+.row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.grid2{display:grid;grid-template-columns:1.35fr .65fr;gap:14px}
+@media(max-width:900px){.grid2,.row{grid-template-columns:1fr}}
+label{display:block;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);margin:8px 0 4px}
+input{width:100%;background:#fff;border:1px solid rgba(18,21,28,.12);border-radius:10px;padding:9px 11px;font:15px Outfit}
+.out{margin-top:10px;font-family:ui-monospace,monospace;font-size:13px;background:rgba(255,255,255,.7);border-radius:10px;padding:10px;white-space:pre-wrap}
+table{width:100%;border-collapse:collapse;font-size:14px;font-variant-numeric:tabular-nums}
+th{text-align:left;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#3a4250;padding:8px 6px;border-bottom:1px solid rgba(18,21,28,.1)}
+td{padding:9px 6px;border-bottom:1px solid rgba(18,21,28,.06)}
+.tag{font-size:10px;letter-spacing:.1em;text-transform:uppercase;border-radius:999px;padding:2px 8px;background:#efe2c2;color:#5a3f0c;font-weight:600}
+.tag.ref{background:#dceee4;color:#0d5c38}
+.tag.go{background:#dceee4;color:#0d5c38}
+.tag.no{background:#f3d6d6;color:#7a1f1f}
+.feed{max-height:160px;overflow:auto;font-size:13px;line-height:1.55;font-variant-numeric:tabular-nums}
+.feed div{padding:3px 0;border-bottom:1px solid rgba(18,21,28,.05)}
+canvas{width:100%;height:170px;background:rgba(255,255,255,.5);border-radius:10px;margin-top:8px}
+footer{position:relative;z-index:1;padding:28px 22px 48px;font-size:12px;color:#3a4250;line-height:1.55}
+</style>
+</head>
+<body>
+<div class="stage"></div>
+<div class="tape"><div class="tape-in">
+<span class="dot"></span><span>DESK LIVE</span><span id="clk"></span>
+<span>BTC <b id="tBTC">—</b> <small id="dBTC"></small></span>
+<span>ETH <b id="tETH">—</b> <small id="dETH"></small></span>
+<span>SOL <b id="tSOL">—</b> <small id="dSOL"></small></span>
+<span>PAXG <b id="tPAXG">—</b> <small id="dPAXG"></small></span>
+<span>next <b id="eta">30s</b></span>
+</div></div>
+<header><div class="bar">
+<a class="brand" href="/"><svg class="crest" viewBox="0 0 200 200" aria-hidden="true"><defs><linearGradient id="uk-steel" x1="0.12" y1="0" x2="0.88" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="0.42" stop-color="#b7bbbe"/><stop offset="1" stop-color="#7f8386"/></linearGradient><linearGradient id="uk-ember" x1="0.18" y1="0" x2="0.82" y2="1"><stop offset="0" stop-color="#ffc24a"/><stop offset="0.45" stop-color="#f5750d"/><stop offset="1" stop-color="#c43f00"/></linearGradient></defs><path d="M157.4,48.3 A77.2,77.2 0 0 1 160,148.6" fill="none" stroke="url(#uk-steel)" stroke-width="22.8"/><path d="M135,168.8 A77.2,77.2 0 0 1 61.4,166.9" fill="none" stroke="url(#uk-steel)" stroke-width="22.8"/><path d="M42.6,151.7 A77.2,77.2 0 0 1 135,31.2" fill="none" stroke="url(#uk-steel)" stroke-width="22.8"/><path d="M99.6,55.7 L171,196 L110.1,122.4 L98.2,125 L87.7,121.5 L26.8,193.8 Z M175.8,-2.0 L134.6,87.9 L120.2,62.0 Z" fill="url(#uk-ember)" fill-rule="nonzero"/></svg>UNYKORN LLC</a>
+<nav><a href="/">Home</a><a href="/desk" class="on">Desk</a><a href="/firms">Firms</a><a href="/rwa">RWA</a><a href="/letters">Letters</a><a href="/developer" style="color:#b8892d;font-weight:600;">Developer Docs (Gate: 12345)</a></nav>
+<a class="btn gold" href="https://launch.unykorn.org/">Launch</a>
+</div></header>
+<div class="wrap">
+<div class="eyebrow">Desk · issuance lab</div>
+<h1>Price it. Stress it. Then mint.</h1>
+<p class="lede">Public prints from CoinGecko. Lab tickets size issuance. Launch board pings our hosts. We do not print a book we do not have.</p>
+<div class="grid2">
+<div class="panel">
+<h3>Blotter</h3>
+<table>
+<thead><tr><th>Time</th><th>Ticket</th><th>Side</th><th>Asset</th><th>Size</th><th>Mark</th><th>24h</th><th>Status</th></tr></thead>
+<tbody id="blot"></tbody>
+</table>
+</div>
+<div class="panel">
+<h3>Launch board</h3>
+<table>
+<thead><tr><th>System</th><th>Code</th><th>Note</th></tr></thead>
+<tbody id="health"></tbody>
+</table>
+<div class="feed" id="feed" style="margin-top:10px"></div>
+</div>
+</div>
+<div class="panel">
+<h3>Black–Scholes · structure size</h3>
+<div class="row">
+<div><label>Spot</label><input id="bsS" type="number" value="4391"></div>
+<div><label>Strike</label><input id="bsK" type="number" value="4400"></div>
+<div><label>T years</label><input id="bsT" type="number" value="0.25" step="0.01"></div>
+<div><label>Vol</label><input id="bsV" type="number" value="0.14" step="0.01"></div>
+<div><label>Rate</label><input id="bsR" type="number" value="0.043" step="0.001"></div>
+<div><label>Div</label><input id="bsQ" type="number" value="0" step="0.001"></div>
+</div>
+<button class="btn gold" style="margin-top:10px" type="button" id="btnBS">Price</button>
+<div class="out" id="bsOut"></div>
+</div>
+<div class="panel">
+<h3>GBM paths</h3>
+<div class="row">
+<div><label>S0</label><input id="mcS" type="number" value="4391"></div>
+<div><label>μ</label><input id="mcM" type="number" value="0.04" step="0.01"></div>
+<div><label>σ</label><input id="mcV" type="number" value="0.14" step="0.01"></div>
+<div><label>Days</label><input id="mcD" type="number" value="252"></div>
+<div><label>Paths</label><input id="mcN" type="number" value="180"></div>
+<div><label>Seed</label><input id="mcSeed" type="number" value="33"></div>
+</div>
+<button class="btn ghost" style="margin-top:10px" type="button" id="btnMC">Simulate</button>
+<canvas id="mcCanvas" width="640" height="170"></canvas>
+<div class="out" id="mcOut"></div>
+</div>
+</div>
+<footer>UnyKorn LLC. Marks are public reference. Lab tickets size issuance. Not a broker-dealer, ATS, or market maker. Custody, where used, opens in your name at BitGo Bank &amp; Trust or Paxos. Mint lives at launch.unykorn.org.</footer>
+<script>
+(function(){
+"use strict";
+const MARK={btc:77192,eth:2389,sol:99.22,paxg:4391};
+const CHG={btc:0,eth:0,sol:0,paxg:0};
+let prev={...MARK};
+const $=(id)=>document.getElementById(id);
+const nowEt=()=>new Date().toLocaleString("en-US",{timeZone:"America/New_York",hour12:false});
+const hhmm=()=>nowEt().split(", ")[1].slice(0,5);
+const fmt=(n)=>n.toLocaleString(undefined,{maximumFractionDigits:n>=1000?0:2});
+const pct=(n)=>(n>0?"+":"")+n.toFixed(2)+"%";
+function log(msg){const line=document.createElement("div");line.textContent=nowEt().split(", ")[1]+"  "+msg;$("feed").prepend(line);while($("feed").children.length>14)$("feed").lastChild.remove();}
+function tick(){$("clk").textContent=nowEt();$("eta").textContent=Math.max(0,30-Math.floor((Date.now()/1000)%30))+"s";}
+function setDelta(el,cur,last){const d=cur-last;el.className=d>0?"up":d<0?"dn":"";el.textContent=d===0?"":((d>0?"+":"")+(Math.abs(d)>=1?d.toFixed(0):d.toFixed(2)));}
+function paintBlot(){
+  const t=hhmm();
+  const rows=[
+    [t,"CG-BTC","PRINT","BTC","1.00","$"+fmt(MARK.btc),pct(CHG.btc),"REF"],
+    [t,"CG-ETH","PRINT","ETH","1.00","$"+fmt(MARK.eth),pct(CHG.eth),"REF"],
+    [t,"CG-SOL","PRINT","SOL","1.00","$"+fmt(MARK.sol),pct(CHG.sol),"REF"],
+    [t,"CG-PAXG","PRINT","PAXG","1 oz","$"+fmt(MARK.paxg),pct(CHG.paxg),"REF"],
+    ["09:42","UYK-TBILL-25M","SIZE","T-bill sleeve","$25,000,000","4.60%","—","LAB"],
+    [t,"UYK-PAXG-200","SIZE","PAXG collat","200 oz","$"+fmt(MARK.paxg*200),pct(CHG.paxg),"LAB"],
+    ["10:18","UYK-SERIES-GLD","SIZE","Gold series cap","1,200 kg","attest","—","LAB"]
+  ];
+  $("blot").innerHTML=rows.map((r)=>`<tr class="flash"><td>${r[0]} ET</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td><td>${r[4]}</td><td>${r[5]}</td><td class="${String(r[6]).startsWith("+")?"up":String(r[6]).startsWith("-")?"dn":""}">${r[6]}</td><td><span class="tag ${r[7]==="REF"?"ref":""}">${r[7]}</span></td></tr>`).join("");
+}
+async function refreshMarks(){
+  prev={...MARK};
+  try{
+    const r=await fetch("/api/marks",{cache:"no-store"});
+    if(!r.ok) throw new Error("marks "+r.status);
+    const j=await r.json();
+    MARK.btc=j.bitcoin.usd; MARK.eth=j.ethereum.usd; MARK.sol=j.solana.usd; MARK.paxg=j["pax-gold"].usd;
+    CHG.btc=j.bitcoin.usd_24h_change||0; CHG.eth=j.ethereum.usd_24h_change||0;
+    CHG.sol=j.solana.usd_24h_change||0; CHG.paxg=j["pax-gold"].usd_24h_change||0;
+    log("print  BTC "+fmt(MARK.btc)+"  PAXG "+fmt(MARK.paxg));
+  }catch(e){log("mark feed delayed — last print held");}
+  $("tBTC").textContent="$"+fmt(MARK.btc); $("tETH").textContent="$"+fmt(MARK.eth);
+  $("tSOL").textContent="$"+fmt(MARK.sol); $("tPAXG").textContent="$"+fmt(MARK.paxg);
+  setDelta($("dBTC"),MARK.btc,prev.btc); setDelta($("dETH"),MARK.eth,prev.eth);
+  setDelta($("dSOL"),MARK.sol,prev.sol); setDelta($("dPAXG"),MARK.paxg,prev.paxg);
+  $("bsS").value=Math.round(MARK.paxg); $("bsK").value=Math.round(MARK.paxg/10)*10; $("mcS").value=Math.round(MARK.paxg);
+  paintBlot(); runBS();
+}
+async function refreshHealth(){
+  try{
+    const r=await fetch("/api/health",{cache:"no-store"});
+    const j=await r.json();
+    $("health").innerHTML=j.checks.map((c)=>`<tr><td>${c.name}</td><td>${c.status}</td><td><span class="tag ${c.ok?"go":"no"}">${c.ok?"GO":"HOLD"}</span> ${c.note}</td></tr>`).join("");
+    const holds=j.checks.filter((c)=>!c.ok).length;
+    log(holds?("launch board HOLD ×"+holds):"launch board GO");
+  }catch(e){log("health route down");}
+}
+function normCdf(x){const a1=0.254829592,a2=-0.284496736,a3=1.421413741,a4=-1.453152027,a5=1.061405429,p=0.3275911;const s=x<0?-1:1,t=1/(1+p*Math.abs(x));const y=1-(((((a5*t+a4)*t)+a3)*t+a2)*t+a1)*t*Math.exp(-x*x/2);return 0.5*(1+s*y);}
+function pdf(x){return Math.exp(-0.5*x*x)/Math.sqrt(2*Math.PI);}
+function runBS(){
+  const S=+$("bsS").value,K=+$("bsK").value,T=+$("bsT").value,sig=+$("bsV").value,r=+$("bsR").value,q=+$("bsQ").value;
+  const vs=sig*Math.sqrt(T),d1=(Math.log(S/K)+(r-q+0.5*sig*sig)*T)/vs,d2=d1-vs,dq=Math.exp(-q*T),dr=Math.exp(-r*T);
+  const call=S*dq*normCdf(d1)-K*dr*normCdf(d2),put=K*dr*normCdf(-d2)-S*dq*normCdf(-d1);
+  $("bsOut").textContent="Call "+call.toFixed(2)+"   Put "+put.toFixed(2)+"\nΔ "+(dq*normCdf(d1)).toFixed(4)+"   ν "+(S*dq*pdf(d1)*Math.sqrt(T)/100).toFixed(4)+"\nSpot seeded from PAXG print. Structure size only.";
+}
+function mulberry32(a){return function(){let t=a+=0x6D2B79F5;t=Math.imul(t^t>>>15,t|1);t^=t+Math.imul(t^t>>>7,t|61);return((t^t>>>14)>>>0)/4294967296;};}
+function gauss(rng){return Math.sqrt(-2*Math.log(1-rng()))*Math.cos(2*Math.PI*rng());}
+function runMC(){
+  const S0=+$("mcS").value,mu=+$("mcM").value,sig=+$("mcV").value,days=+$("mcD").value,N=+$("mcN").value;
+  const rng=mulberry32(+$("mcSeed").value||1),dt=1/252,paths=[],end=[];
+  for(let i=0;i<N;i++){const p=[S0];let s=S0;for(let t=0;t<days;t++){s=s*Math.exp((mu-0.5*sig*sig)*dt+sig*Math.sqrt(dt)*gauss(rng));p.push(s);}paths.push(p);end.push(s);}
+  end.sort((a,b)=>a-b);
+  $("mcOut").textContent="E[ST]="+(end.reduce((a,b)=>a+b,0)/end.length).toFixed(2)+"  P5="+end[Math.floor(0.05*end.length)].toFixed(2)+"  P95="+end[Math.floor(0.95*end.length)].toFixed(2);
+  const c=$("mcCanvas").getContext("2d"),w=$("mcCanvas").width,h=$("mcCanvas").height;
+  c.clearRect(0,0,w,h);let mn=1e99,mx=-1e99;paths.forEach((p)=>p.forEach((v)=>{if(v<mn)mn=v;if(v>mx)mx=v;}));
+  paths.slice(0,60).forEach((p)=>{c.beginPath();c.strokeStyle="rgba(47,154,163,.22)";p.forEach((v,t)=>{const x=t/(p.length-1)*w,y=h-(v-mn)/(mx-mn+1e-9)*h;t?c.lineTo(x,y):c.moveTo(x,y);});c.stroke();});
+}
+$("btnBS").addEventListener("click",runBS);
+$("btnMC").addEventListener("click",runMC);
+tick(); setInterval(tick,1000);
+refreshMarks(); refreshHealth(); runMC();
+setInterval(refreshMarks,30000); setInterval(refreshHealth,60000);
+log("desk session open");
+})();
+</script>
+</body>
+</html>
