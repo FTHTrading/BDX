@@ -4,10 +4,11 @@ export function FrostStage() {
       aria-hidden
       className="pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-linear-to-b from-paper to-ice"
     >
-      <div className="frost-blob left-[-140px] top-5 size-[560px] bg-[#c7dbff]" />
-      <div className="frost-blob right-[-100px] top-28 size-[500px] bg-[#ffd7b0] [animation-direction:reverse]" />
-      <div className="frost-blob bottom-[-80px] left-[38%] size-[420px] bg-[#c4f0e8] [animation-delay:-7s]" />
-      <div className="absolute inset-0 bg-white/20 backdrop-blur-[1px]" />
+      <div className="frost-blob left-[-180px] top-[-40px] size-[640px] bg-[#bdd6ff]" />
+      <div className="frost-blob right-[-140px] top-10 size-[560px] bg-[#ffd4a8] [animation-direction:reverse]" />
+      <div className="frost-blob bottom-[-120px] left-[28%] size-[480px] bg-[#b8f3e8] [animation-delay:-8s]" />
+      <div className="frost-blob right-[18%] top-[42%] size-[280px] bg-white [animation-delay:-12s] opacity-80" />
+      <div className="absolute inset-0 bg-white/18 backdrop-blur-[1.5px]" />
     </div>
   );
 }

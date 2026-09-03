@@ -42,11 +42,11 @@ export const RAILS = [
     docs: "https://mint.unykorn.org",
   },
   {
-    name: "TROPTIONS Exchange OS",
-    role: "XRPL books + AMM. Guided launch with proof packets.",
+    name: "UnyKorn Exchange OS",
+    role: "XRPL books and AMM for UnyKorn series. Guided launch with proof packets.",
     status: "RAIL" as const,
-    note: "Listing approvals are a separate operator flow.",
-    docs: "https://troptions.unykorn.org/exchange-os",
+    note: "Listing approvals are a separate UnyKorn operator flow.",
+    docs: "https://genesis402.com",
   },
   {
     name: "CCT / CCIP",
@@ -62,5 +62,40 @@ export const CHAINS = [
   { name: "Apostle", id: "7332", status: "HOLD" as const, note: "LOCAL_STUB only." },
   { name: "Solana", id: "main / devnet", status: "RAIL" as const, note: "x402 worker + mint.unykorn.org." },
   { name: "Ethereum / Sepolia", id: "1 / 11155111", status: "HOLD" as const, note: "CCT kit target. Unsigned." },
-  { name: "XRPL", id: "main", status: "RAIL" as const, note: "TROPTIONS books. Not this blotter." },
+  { name: "XRPL", id: "main", status: "RAIL" as const, note: "UnyKorn books. Not this blotter." },
+] as const;
+
+export const PROTOCOL = [
+  { name: "Genesis402 console", url: "https://genesis402.com", role: "Operator map for the capital stack" },
+  { name: "Protocol docs", url: "https://dev.genesis402.com/protocol/overview/", role: "Console & rails overview" },
+  { name: "System mint", url: "https://mint.unykorn.org", role: "SPL mint" },
+  { name: "x402 worker", url: "https://x402.unykorn.org", role: "HTTP 402 rail" },
+  { name: "RWA catalog", url: "https://fthtrading.github.io/smart-contract-builder/", role: "Foundry library" },
+  { name: "RWA docs", url: "https://smartcontract.unykorn.ai", role: "Contract library pages" },
+  { name: "Quant Command (BDX)", url: "https://github.com/FTHTrading/BDX", role: "This desk — source" },
+  { name: "Smart-contract builder", url: "https://github.com/FTHTrading/smart-contract-builder", role: "RWA Solidity" },
+  { name: "BD-New possession", url: "https://github.com/FTHTrading/BD-New", role: "15c3-3 evidence engine" },
+  { name: "White-label fabric", url: "https://github.com/FTHTrading/whitelabel", role: "Evaluation modules" },
+] as const;
+
+export const CONTRACTS = [
+  { family: "Draw escrow", note: "Milestone + waiver attestation" },
+  { family: "CMBS waterfall", note: "Senior / mezz / equity" },
+  { family: "Pool delegate", note: "Maple-shape credit" },
+  { family: "Invoice factoring", note: "Advance-rate pool" },
+  { family: "Tokenized treasury", note: "PoR-gated mint" },
+  { family: "Cash vault 4626", note: "Reserve ratio" },
+  { family: "ERC-3643 security", note: "Identity + freeze" },
+  { family: "Gold-backed token", note: "PAXG-shape PoR" },
+  { family: "CCIP CCT", note: "BurnMint — BitGo admin" },
+  { family: "REIT distributor", note: "Pull dividend accumulator" },
+] as const;
+
+export const SKUS = [
+  { n: "01", name: "Evidence desk", for: "Legal / construction" },
+  { n: "02", name: "Legacy vault", for: "Wealth / RIA" },
+  { n: "03", name: "Private credit ops", for: "Lenders" },
+  { n: "04", name: "Provenance vault", for: "Art / GAA" },
+  { n: "05", name: "Issuer OS", for: "Sponsors / ERC-3643" },
+  { n: "06", name: "Sovereign fabric", for: "Family office" },
 ] as const;

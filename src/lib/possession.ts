@@ -35,8 +35,8 @@ export function possessionGate(flags: Record<string, boolean>) {
     failed: failed.map((c) => c.id),
     reason:
       failed.length === 0
-        ? "All five conditions met — still not a 15c3-3 filing from this console."
-        : `Refuse possession: ${failed.map((c) => c.id).join(", ")}`,
+        ? "Conditions recorded. This console does not file a 15c3-3 assertion."
+        : `Possession not asserted: ${failed.map((c) => c.id).join(", ")}`,
   };
 }
 

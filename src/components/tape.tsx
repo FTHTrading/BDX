@@ -1,12 +1,24 @@
 import { useEffect, useState } from "react";
 import { fetchMarks, type Marks } from "@/lib/marks";
+import { obiFromBook } from "@/lib/confluence";
 import { usd } from "@/lib/utils";
+import { StatusChip } from "@/components/status";
 
 export function Tape() {
   const [m, setM] = useState<Marks | null>(null);
+  const [obi, setObi] = useState<number | null>(null);
   useEffect(() => {
     let on = true;
-    const run = () => fetchMarks().then((v) => on && setM(v));
+    const run = () => {
+      fetchMarks().then((v) => on && setM(v));
+      fetch("https://api.exchange.coinbase.com/products/BTC-USD/book?level=2")
+        .then((r) => r.json())
+        .then((d) => {
+          if (!on || !d?.bids) return;
+          setObi(obiFromBook(d.bids, d.asks).obi);
+        })
+        .catch(() => on && setObi(null));
+    };
     run();
     const id = setInterval(run, 30000);
     return () => {
@@ -25,16 +37,18 @@ export function Tape() {
   return (
     <div className="mb-8 flex flex-wrap items-center gap-x-4 gap-y-2 rounded-2xl glass px-4 py-3 text-sm">
       <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-gold">
-        Reference tape
+        Reference marks
       </span>
       {cell("BTC", m?.BTC ?? null)}
       {cell("ETH", m?.ETH ?? null)}
       {cell("SOL", m?.SOL ?? null)}
       {cell("PAXG", m?.PAXG ?? null)}
+      <span className="inline-flex items-center gap-2 font-mono text-sm">
+        <StatusChip code="REF" />
+        OBI {obi == null ? "—" : obi.toFixed(3)}
+      </span>
       <span className="text-xs text-mute">
-        {m?.ok
-          ? "Public spot · delayed · not a UnyKorn quote · not executable"
-          : "Public spot unavailable"}
+        Delayed venue marks · Coinbase L2 · not a UnyKorn price
       </span>
     </div>
   );

@@ -3,26 +3,26 @@ import { cn } from "@/lib/utils";
 export const STATUSES = [
   {
     code: "REF",
-    label: "Reference print",
-    meaning: "Public spot. Delayed. Not a quote.",
+    label: "Public reference",
+    meaning: "Delayed venue print. Not a UnyKorn price.",
     className: "bg-ref/10 text-ref border-ref/30",
   },
   {
     code: "LAB",
-    label: "Lab ticket",
-    meaning: "Sizing only. Never leaves this browser.",
+    label: "Internal size",
+    meaning: "Calculation only. Not a market.",
     className: "bg-lab/15 text-ember border-lab/40",
   },
   {
     code: "RAIL",
-    label: "Named rail",
-    meaning: "Intended counterparty. No session here.",
+    label: "Counterparty",
+    meaning: "Named. No account session on this console.",
     className: "bg-rail/10 text-rail border-rail/30",
   },
   {
     code: "HOLD",
-    label: "Not live",
-    meaning: "No order, custody, settlement, or mint.",
+    label: "Not connected",
+    meaning: "Order, custody, settlement, and mint remain off-system.",
     className: "bg-hold/10 text-hold border-hold/30",
   },
 ] as const;
