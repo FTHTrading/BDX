@@ -18,7 +18,7 @@ const DOORS = [
     n: "02",
     to: "/ops" as const,
     title: "Operations",
-    copy: "BitGo Express, Paxos, possession evidence. No keys on this console.",
+    copy: "the custodian Express, cash rails, possession evidence. No keys on this console.",
   },
   {
     n: "03",
@@ -48,7 +48,7 @@ function Home() {
       <p className="mt-5 max-w-xl text-lg leading-relaxed text-mute">
         Software for series design, custody coordination, and controlled handoff.
         Public marks are venue references. Qualified custody, where used, is
-        BitGo Bank & Trust or Paxos in the client’s name.
+        a chartered custodian or cash rails in the client’s name.
       </p>
       <div className="mt-6 flex flex-wrap gap-3">
         <Link

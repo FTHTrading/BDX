@@ -1,28 +1,28 @@
 export const RAILS = [
   {
-    name: "BitGo Express",
-    role: "Local daemon the client hosts. Proxies BitGo REST. Keys stay in their policy wallet.",
+    name: "the custodian Express",
+    role: "Local daemon the client hosts. Proxies the custodian REST. Keys stay in their policy wallet.",
     status: "HOLD" as const,
     note: "No Express host attached. Ping is not attempted from this console.",
     docs: "https://developers.bitgo.com/docs/get-started-express-install",
   },
   {
-    name: "BitGo Bank & Trust",
+    name: "a chartered custodian",
     role: "Qualified custody. Intended CCIP / CCT admin for a series.",
     status: "RAIL" as const,
     note: "Named counterparty. No wallet id or balance here.",
     docs: "https://www.bitgo.com/",
   },
   {
-    name: "Paxos",
+    name: "cash rails",
     role: "Cash (PYUSD) and gold (PAXG).",
     status: "RAIL" as const,
-    note: "No Paxos session. Tape marks are public spots.",
+    note: "No cash rails session. Tape marks are public spots.",
     docs: "https://paxos.com/",
   },
   {
-    name: "itBit",
-    role: "Paxos institutional venue for USD / PAXG.",
+    name: "the venue",
+    role: "cash rails institutional venue for USD / PAXG.",
     status: "RAIL" as const,
     note: "Not a UnyKorn book.",
     docs: "https://www.itbit.com/",
@@ -50,7 +50,7 @@ export const RAILS = [
   },
   {
     name: "CCT / CCIP",
-    role: "BurnMint token pool. BitGo as token admin. Not LayerZero OFT.",
+    role: "BurnMint token pool. the custodian as token admin. Not LayerZero OFT.",
     status: "HOLD" as const,
     note: "Kit unsigned. No pool address until a key is supplied.",
     docs: "https://docs.chain.link/ccip/concepts/cross-chain-tokens",
@@ -87,7 +87,7 @@ export const CONTRACTS = [
   { family: "Cash vault 4626", note: "Reserve ratio" },
   { family: "ERC-3643 security", note: "Identity + freeze" },
   { family: "Gold-backed token", note: "PAXG-shape PoR" },
-  { family: "CCIP CCT", note: "BurnMint — BitGo admin" },
+  { family: "CCIP CCT", note: "BurnMint — the custodian admin" },
   { family: "REIT distributor", note: "Pull dividend accumulator" },
 ] as const;
 

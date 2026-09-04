@@ -11,8 +11,8 @@ This console is structuring software. It is not the operator execution process.
 | Confluence 0–100 | Weighted OBI, vol, Pearson | LAB |
 | Execution instruction | Declined | HOLD |
 | Model relay | Not connected | HOLD |
-| BitGo Express | Not connected | HOLD |
-| Paxos | Named only | RAIL |
+| the custodian Express | Not connected | HOLD |
+| cash rails | Named only | RAIL |
 | Mint / CCT | Off-system / unsigned | HOLD |
 
 Predictive telemetry remains on a separate operator process.

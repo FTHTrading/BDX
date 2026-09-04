@@ -7,4 +7,4 @@
 | **RAIL** | `#0F766E` teal | Named counterparty, no session |
 | **HOLD** | `#6B7280` slate | Not connected |
 
-Do not mark BitGo, Paxos, or execution LIVE without a session identifier and confirmation.
+Do not mark the custodian, cash rails, or execution LIVE without a session identifier and confirmation.

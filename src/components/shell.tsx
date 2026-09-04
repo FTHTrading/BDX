@@ -50,7 +50,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
         <div className="mx-auto max-w-6xl">
           UnyKorn LLC provides issuance and structuring software. It is not a
           broker-dealer, bank, custodian, ATS, or exchange. Qualified custody,
-          where used, opens in the client’s name at BitGo Bank & Trust or Paxos.
+          where used, opens in the client’s name at a chartered custodian or cash rails.
           This console does not accept orders, hold keys, settle, or mint.
         </div>
       </footer>

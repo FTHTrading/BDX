@@ -54,7 +54,7 @@ It does not mint. See [docs/LAUNCH.md](docs/LAUNCH.md).
 | Room | Job |
 | --- | --- |
 | Desk | Blotter, Black–Scholes, GBM, book imbalance, confluence |
-| Operations | BitGo Express, Paxos, possession evidence |
+| Operations | the custodian Express, cash rails, possession evidence |
 | Infrastructure | Counterparties, chains, CCT, contract families, modules |
 | Documentation | System map and connectivity |
 | Handoff | Structured packet |
@@ -76,7 +76,7 @@ Full map: [docs/BACKEND.md](docs/BACKEND.md).
 
 ## Infrastructure
 
-BitGo Express · BitGo Bank & Trust · Paxos · itBit · x402 · UnyKorn mint · UnyKorn Exchange OS · CCT/CCIP
+the custodian Express · a chartered custodian · cash rails · the venue · x402 · UnyKorn mint · UnyKorn Exchange OS · CCT/CCIP
 
 - [smart-contract-builder](https://github.com/FTHTrading/smart-contract-builder)
 - [BD-New](https://github.com/FTHTrading/BD-New)
@@ -90,7 +90,7 @@ Public marks, book imbalance, Black–Scholes, GBM, T-bill / waterfall, possessi
 
 ## What is not
 
-Live RFQ, Express query, Paxos session, Federal Reserve feed, execution, mint, broker-dealer registration.
+Live RFQ, Express query, cash rails session, Federal Reserve feed, execution, mint, broker-dealer registration.
 
 ---
 
@@ -113,6 +113,6 @@ docs/                     COLOR, BACKEND, LAUNCH
 
 ## Legal
 
-UnyKorn LLC licenses software and infrastructure. Custody, where used, opens in the client’s name at BitGo Bank & Trust or Paxos. Material here is information, not an offer of securities.
+UnyKorn LLC licenses software and infrastructure. Custody, where used, opens in the client’s name at a chartered custodian or cash rails. Material here is information, not an offer of securities.
 
 © UnyKorn LLC / FTH Trading

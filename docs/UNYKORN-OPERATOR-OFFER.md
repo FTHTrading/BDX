@@ -8,7 +8,7 @@ The client is the account holder.
 A chartered custodian — when one is required — is contracted **in the client's name**.
 UnyKorn never holds client assets on its own balance sheet and does not act as broker-dealer, ATS, bank, or qualified custodian.
 
-BitGo is not a live UnyKorn product, not a homepage rail, and not part of any current offer.
+the custodian is not a live UnyKorn product, not a homepage rail, and not part of any current offer.
 
 ## What we sell
 - Install — one system live under their name and domain
@@ -17,7 +17,7 @@ BitGo is not a live UnyKorn product, not a homepage rail, and not part of any cu
 - Catalog — pick the modules
 
 ## Systems
-Mint / issuance, policy + labeled wallets, Sovereign cockpit, x402, Exchange OS, Legacy Vault, GMIIE, custody connector (Paxos, itBit, or another name that will take the account).
+Mint / issuance, policy + labeled wallets, Sovereign cockpit, x402, Exchange OS, Legacy Vault, GMIIE, custody connector (cash rails, the venue, or another name that will take the account).
 
 ## Lines we never use
-BitGo holds the keys. Banked by BitGo. LIVE BitGo. OCC-chartered vaults we run for you. $250M insurance as ours.
+We set the systems up. Installed in your name. INSTALL. OCC-chartered vaults we run for you. $250M insurance as ours.

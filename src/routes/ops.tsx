@@ -31,7 +31,7 @@ function Ops() {
         Custody rails. No keys on this console.
       </h1>
       <p className="mt-3 max-w-xl text-mute">
-        BitGo Express is hosted by the client. Paxos cash and gold remain in the
+        the custodian Express is hosted by the client. cash rails cash and gold remain in the
         client’s name. This page does not query wallets, sign, or transmit.
       </p>
 

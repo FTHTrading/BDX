@@ -21,7 +21,7 @@ function Launch() {
       <h1 className="mt-2 font-display text-4xl md:text-5xl">Prepare the handoff.</h1>
       <p className="mt-3 max-w-xl text-mute">
         Copies a structured packet for custody and mint counterparties. Does not
-        instruct BitGo Express, does not originate an order, and does not mint.
+        instruct the custodian Express, does not originate an order, and does not mint.
       </p>
       <div className="mt-6 flex flex-wrap gap-3">
         <button

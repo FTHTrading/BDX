@@ -21,7 +21,7 @@ export const firmTypes = [...new Set(firms.map((f) => f.type))].sort();
 export function letterBody(firm: Firm) {
   return `Dear ${firm.persona},
 
-UnyKorn LLC licenses issuance software and infrastructure. We are not a broker-dealer, bank, custodian, ATS, or market maker. Custody, where used, opens in the client's name at BitGo Bank & Trust or Paxos.
+UnyKorn LLC licenses issuance software and infrastructure. We are not a broker-dealer, bank, custodian, ATS, or market maker. Custody, where used, opens in the client's name at a chartered custodian or cash rails.
 
 We are writing because ${firm.name} (${firm.type}, ${firm.hq}) typically buys: ${firm.they_buy}.
 

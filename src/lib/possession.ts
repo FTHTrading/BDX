@@ -4,7 +4,7 @@ export const CONDITIONS = [
   {
     id: "exclusive",
     title: "Exclusive cryptographic control",
-    detail: "Keys / policy at BitGo Express in the client’s name. UnyKorn never holds keys.",
+    detail: "Keys / policy at the custodian Express in the client’s name. UnyKorn never holds keys.",
   },
   {
     id: "segregated",

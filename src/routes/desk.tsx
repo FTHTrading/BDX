@@ -18,7 +18,7 @@ const ROWS = [
   { t: "LAB" as const, ticket: "UYK-PAXG-200", side: "SIZE", asset: "PAXG collat", size: "200 oz", mark: "attest" },
   { t: "HOLD" as const, ticket: "UYK-MINT", side: "HOLD", asset: "Series mint", size: "—", mark: "launch rail" },
   { t: "RAIL" as const, ticket: "UYK-PAXOS", side: "RAIL", asset: "PYUSD / PAXG", size: "named", mark: "no session" },
-  { t: "HOLD" as const, ticket: "UYK-EXPRESS", side: "HOLD", asset: "BitGo Express", size: "daemon", mark: "not attached" },
+  { t: "HOLD" as const, ticket: "UYK-EXPRESS", side: "HOLD", asset: "the custodian Express", size: "daemon", mark: "not attached" },
   { t: "HOLD" as const, ticket: "UYK-CCT", side: "HOLD", asset: "CCIP BurnMint", size: "pool", mark: "unsigned" },
   { t: "HOLD" as const, ticket: "UYK-COCKPIT", side: "HOLD", asset: "Execution trigger", size: "SPI", mark: "not attached" },
 ];
