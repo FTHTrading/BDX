@@ -4,7 +4,7 @@ export function launchPacket() {
     console: "UnyKorn structuring console",
     action: "handoff",
     rails: {
-      bitgoExpress: "HOLD — client daemon not attached",
+      qualifiedCustodian: "HOLD — no custodian engaged",
       paxos: "RAIL — named, no session",
       cct: "HOLD — unsigned",
       mint: "launch rail — not this console",

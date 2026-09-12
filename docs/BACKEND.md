@@ -11,7 +11,7 @@ This console is structuring software. It is not the operator execution process.
 | Confluence 0–100 | Weighted OBI, vol, Pearson | LAB |
 | Execution instruction | Declined | HOLD |
 | Model relay | Not connected | HOLD |
-| the custodian Express | Not connected | HOLD |
+| the client's qualified custodian | Not connected | HOLD |
 | cash rails | Named only | RAIL |
 | Mint / CCT | Off-system / unsigned | HOLD |
 

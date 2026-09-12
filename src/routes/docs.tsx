@@ -32,7 +32,7 @@ const LAYERS = [
     copy: "Model relay is not connected to this console.",
   },
   {
-    name: "the custodian Express / cash rails",
+    name: "the client's qualified custodian / cash rails",
     chip: "HOLD" as const,
     copy: "Named rails. Express is a daemon the client hosts. Keys never in UnyKorn.",
   },
